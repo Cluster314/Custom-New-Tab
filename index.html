@@ -169,10 +169,6 @@
                     <label class="block text-xs text-slate-400 mb-1 uppercase">URL</label>
                     <input type="url" id="new-url" required placeholder="https://github.com" class="w-full bg-slate-900 border border-[#40bfff]/30 rounded-lg px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-[#40bfff]">
                 </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1 uppercase">Emoji Icon</label>
-                    <input type="text" id="new-icon" required maxlength="4" value="🔗" class="w-full bg-slate-900 border border-[#40bfff]/30 rounded-lg px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-[#40bfff]">
-                </div>
                 <div class="flex justify-end space-x-3 pt-2">
                     <button type="button" onclick="closeAddShortcutModal()" class="px-4 py-2 rounded border border-slate-700 text-slate-400 hover:bg-slate-800 transition text-xs font-bold">Cancel</button>
                     <button type="submit" class="px-4 py-2 rounded bg-[#40bfff] text-black font-bold hover:bg-[#2fa3e6] transition text-xs font-orbitron">Save</button>
@@ -204,11 +200,17 @@
                     hostname = new URL(item.url).hostname;
                 } catch(e) {}
 
+                // Automatically grab the website's favicon using Google's public favicon service
+                const faviconUrl = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+
                 const card = document.createElement('a');
                 card.href = item.url;
                 card.className = "group tech-border rounded-lg p-3 flex items-center space-x-3 hover:border-[#40bfff] hover:shadow-[0_0_15px_rgba(64,191,255,0.3)] transition duration-200 bg-slate-900/60 relative overflow-hidden";
                 card.innerHTML = `
-                    <span class="text-2xl p-2 rounded bg-slate-900 border border-[#40bfff]/20 group-hover:scale-105 transition">${item.icon}</span>
+                    <div class="w-9 h-9 flex items-center justify-center rounded bg-slate-900 border border-[#40bfff]/20 p-1.5 group-hover:scale-105 transition shrink-0">
+                        <img src="${faviconUrl}" alt="" class="w-5 h-5 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <span class="hidden text-xs text-[#40bfff] font-bold">🌐</span>
+                    </div>
                     <div class="flex-1 min-w-0">
                         <div class="font-orbitron font-bold text-xs text-slate-200 truncate group-hover:text-[#40bfff] transition">${item.title}</div>
                         <div class="text-[10px] text-slate-500 truncate">${hostname}</div>
@@ -235,9 +237,8 @@
             e.preventDefault();
             const title = document.getElementById('new-title').value.trim();
             const url = document.getElementById('new-url').value.trim();
-            const icon = document.getElementById('new-icon').value.trim() || '🔗';
             
-            shortcuts.push({ title, url, icon });
+            shortcuts.push({ title, url });
             localStorage.setItem('tech_shortcuts_40bfff', JSON.stringify(shortcuts));
             renderShortcuts();
             closeAddShortcutModal();
