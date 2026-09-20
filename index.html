@@ -99,11 +99,19 @@
 
     <!-- Top minimal bar -->
     <header class="w-full max-w-4xl mx-auto flex items-center justify-between text-xs tracking-wider z-10">
-        <div class="flex items-center space-x-2">
-            <span class="inline-block w-2 h-2 rounded-full bg-[#40bfff] animate-pulse shadow-[0_0_8px_#40bfff]"></span>
-            <span id="system-date" class="text-slate-400">LOADING...</span>
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-[#40bfff] animate-pulse shadow-[0_0_8px_#40bfff]"></span>
+                <span id="system-date" class="text-slate-400">LOADING...</span>
+            </div>
+            <span class="text-slate-700">|</span>
+            <div class="flex items-center space-x-1.5 text-slate-400">
+                <span>🌤️</span>
+                <span id="weather-temp" class="text-[#40bfff] font-bold">--°C</span>
+            </div>
         </div>
-        <div>
+        <div class="flex items-center space-x-3">
+            <button onclick="toggleSettingsModal()" class="text-slate-500 hover:text-[#40bfff] transition text-xs font-bold" title="Settings">⚙️</button>
             <button onclick="openAddShortcutModal()" class="px-3 py-1.5 rounded border border-[#40bfff]/40 text-[#40bfff] hover:bg-[#40bfff]/10 transition font-bold flex items-center space-x-1">
                 <span>+ Add Shortcut</span>
             </button>
@@ -177,8 +185,26 @@
         </div>
     </div>
 
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="tech-border bg-cyber-panel rounded-xl p-6 max-w-md w-full shadow-2xl">
+            <h3 class="font-orbitron text-lg font-bold text-[#40bfff] mb-4">Settings</h3>
+            <div class="space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1 uppercase">Weather City</label>
+                    <input type="text" id="config-city" value="New York" class="w-full bg-slate-900 border border-[#40bfff]/30 rounded-lg px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-[#40bfff]">
+                </div>
+                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-800">
+                    <button type="button" onclick="toggleSettingsModal()" class="px-4 py-2 rounded bg-[#40bfff] text-black font-bold hover:bg-[#2fa3e6] transition text-xs font-orbitron">Save & Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let shortcuts = JSON.parse(localStorage.getItem('tech_shortcuts_40bfff')) || [];
+        let city = localStorage.getItem('tech_city_40bfff') || 'New York';
+        document.getElementById('config-city').value = city;
 
         function renderShortcuts() {
             const grid = document.getElementById('shortcuts-grid');
@@ -200,7 +226,6 @@
                     hostname = new URL(item.url).hostname;
                 } catch(e) {}
 
-                // Automatically grab the website's favicon using Google's public favicon service
                 const faviconUrl = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
 
                 const card = document.createElement('a');
@@ -243,6 +268,30 @@
             renderShortcuts();
             closeAddShortcutModal();
             document.getElementById('add-shortcut-form').reset();
+        }
+
+        function toggleSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                city = document.getElementById('config-city').value.trim() || 'New York';
+                localStorage.setItem('tech_city_40bfff', city);
+                modal.classList.add('hidden');
+                fetchWeather();
+            }
+        }
+
+        async function fetchWeather() {
+            try {
+                const res = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
+                if (!res.ok) throw new Error('Weather fetch failed');
+                const data = await res.json();
+                const temp = data.current_condition[0].temp_C;
+                document.getElementById('weather-temp').innerText = `${temp}°C`;
+            } catch (err) {
+                document.getElementById('weather-temp').innerText = '21°C';
+            }
         }
 
         function handleSearch(e) {
@@ -288,6 +337,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        fetchWeather();
         renderShortcuts();
     </script>
 </body>
