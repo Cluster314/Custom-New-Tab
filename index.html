@@ -39,6 +39,16 @@
             font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
         }
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+        }
         .scanlines {
             background: linear-gradient(
                 to bottom,
@@ -94,8 +104,11 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between relative text-slate-300 selection:bg-[#40bfff] selection:text-black p-4 md:p-8">
 
-    <div class="fixed inset-0 scanlines z-50 opacity-20"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-[#40bfff]/5 rounded-full blur-[160px] pointer-events-none"></div>
+    <!-- Matrix Background Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="fixed inset-0 scanlines z-50 pointer-events-none opacity-20"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-[#40bfff]/5 rounded-full blur-[160px] pointer-events-none z-0"></div>
 
     <!-- Top minimal bar -->
     <header class="w-full max-w-4xl mx-auto flex items-center justify-between text-xs tracking-wider z-10">
@@ -178,6 +191,45 @@
     </div>
 
     <script>
+        // Matrix Rain Background Animation
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ#40BFFF';
+        const fontSize = 14;
+        let columns = canvas.width / fontSize;
+        let drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(4, 6, 9, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#40bfff';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // Shortcuts Logic
         let shortcuts = JSON.parse(localStorage.getItem('tech_shortcuts_40bfff')) || [];
 
         function renderShortcuts() {
@@ -200,7 +252,6 @@
                     hostname = new URL(item.url).hostname;
                 } catch(e) {}
 
-                // Automatically grab the website's favicon using Google's public favicon service
                 const faviconUrl = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
 
                 const card = document.createElement('a');
