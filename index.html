@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workspace // #40bfff</title>
+    <title>New Tab // #40bfff</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,18 +19,14 @@
                     },
                     colors: {
                         cyber: {
-                            dark: '#05070c',
+                            dark: '#040609',
                             panel: '#0d111a',
                             border: '#1a365d',
                             accent: '#40bfff',
-                            green: '#10b981',
-                            pink: '#ec4899',
-                            yellow: '#f59e0b',
                         }
                     },
                     boxShadow: {
                         'neon-accent': '0 0 15px rgba(64, 191, 255, 0.4)',
-                        'neon-green': '0 0 15px rgba(16, 185, 129, 0.3)',
                     }
                 }
             }
@@ -96,156 +92,68 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative text-slate-300 selection:bg-[#40bfff] selection:text-black">
+<body class="min-h-screen flex flex-col justify-between relative text-slate-300 selection:bg-[#40bfff] selection:text-black p-4 md:p-8">
 
-    <div class="fixed inset-0 scanlines z-50 opacity-30"></div>
+    <div class="fixed inset-0 scanlines z-50 opacity-20"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-[#40bfff]/5 rounded-full blur-[160px] pointer-events-none"></div>
 
-    <div class="absolute top-0 left-1/4 w-[32rem] h-[32rem] bg-[#40bfff]/10 rounded-full blur-[140px] pointer-events-none"></div>
-    <div class="absolute bottom-0 right-1/4 w-[32rem] h-[32rem] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none"></div>
-
-    <header class="w-full border-b border-[#40bfff]/20 bg-cyber-panel/90 backdrop-blur-md px-4 py-3 flex flex-wrap items-center justify-between z-10 text-xs tracking-wider">
-        <div class="flex items-center space-x-4">
-            <div class="flex items-center space-x-2">
-                <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#40bfff] animate-pulse shadow-[0_0_10px_#40bfff]"></span>
-                <span class="font-orbitron font-bold text-[#40bfff] tracking-wider text-sm">WORKSPACE ONLINE</span>
-            </div>
-            <span class="hidden sm:inline text-slate-600">|</span>
-            <span id="system-date" class="hidden sm:inline text-slate-400">LOADING...</span>
+    <!-- Top minimal bar -->
+    <header class="w-full max-w-4xl mx-auto flex items-center justify-between text-xs tracking-wider z-10">
+        <div class="flex items-center space-x-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-[#40bfff] animate-pulse shadow-[0_0_8px_#40bfff]"></span>
+            <span id="system-date" class="text-slate-400">LOADING...</span>
         </div>
-
-        <div class="flex items-center space-x-6">
-            <div class="flex items-center space-x-2">
-                <span class="text-slate-500">LATENCY:</span>
-                <span id="ping-status" class="text-emerald-400 font-bold">14ms</span>
-            </div>
-            <div class="flex items-center space-x-2">
-                <span class="text-slate-500">UPTIME:</span>
-                <span id="uptime-status" class="text-[#40bfff] font-bold">00:00:00</span>
-            </div>
-            <button onclick="toggleSettingsModal()" class="px-2.5 py-1 rounded border border-[#40bfff]/40 text-[#40bfff] hover:bg-[#40bfff]/10 transition flex items-center space-x-1 font-bold">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span>SETTINGS</span>
+        <div>
+            <button onclick="openAddShortcutModal()" class="px-3 py-1.5 rounded border border-[#40bfff]/40 text-[#40bfff] hover:bg-[#40bfff]/10 transition font-bold flex items-center space-x-1">
+                <span>+ Add Shortcut</span>
             </button>
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start z-10">
+    <!-- Center Hub: Clock & Search -->
+    <main class="w-full max-w-2xl mx-auto flex flex-col items-center space-y-8 z-10 my-auto">
 
-        <!-- LEFT COLUMN: Clock, Search & Shortcuts -->
-        <div class="lg:col-span-8 flex flex-col space-y-6">
-
-            <!-- Hero Clock & Weather Widget -->
-            <div class="tech-border rounded-xl p-6 relative overflow-hidden">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <div class="text-xs uppercase tracking-widest text-[#40bfff] font-bold mb-1" id="greeting-text">
-                            GOOD DAY
-                        </div>
-                        <div class="flex items-baseline space-x-2">
-                            <h1 id="live-clock" class="font-orbitron text-4xl sm:text-6xl font-black text-white tracking-wider glow-text-accent">00:00:00</h1>
-                            <span id="live-ampm" class="font-orbitron text-xl sm:text-2xl font-bold text-[#40bfff]">AM</span>
-                        </div>
-                    </div>
-                    <div class="text-right flex flex-col md:items-end justify-center">
-                        <div class="flex items-center space-x-2 bg-slate-900/80 px-3.5 py-2 rounded-lg border border-[#40bfff]/30">
-                            <span class="text-xl">🌤️</span>
-                            <div>
-                                <div class="text-sm font-bold text-emerald-400" id="weather-temp">--°C</div>
-                                <div class="text-[10px] text-slate-400 uppercase" id="weather-cond">LOCAL WEATHER</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Clean Clock -->
+        <div class="text-center">
+            <div class="flex items-baseline justify-center space-x-2">
+                <h1 id="live-clock" class="font-orbitron text-5xl sm:text-7xl font-black text-white tracking-wider glow-text-accent">00:00:00</h1>
+                <span id="live-ampm" class="font-orbitron text-xl sm:text-2xl font-bold text-[#40bfff]">AM</span>
             </div>
-
-            <!-- Search Bar Module -->
-            <div class="tech-border rounded-xl p-4">
-                <form id="search-form" onsubmit="handleSearch(event)" class="flex flex-col sm:flex-row gap-2">
-                    <div class="relative flex items-center">
-                        <select id="search-engine" class="bg-slate-900 border border-[#40bfff]/30 rounded-lg px-3 py-3 text-[#40bfff] font-mono text-sm focus:outline-none focus:border-[#40bfff] cursor-pointer">
-                            <option value="google">Google</option>
-                            <option value="duckduckgo">DuckDuckGo</option>
-                            <option value="github">GitHub</option>
-                            <option value="youtube">YouTube</option>
-                        </select>
-                    </div>
-                    <div class="relative flex-1 flex items-center">
-                        <span class="absolute left-3 text-[#40bfff] font-bold">&gt;</span>
-                        <input type="text" id="search-input" autofocus autocomplete="off" placeholder="Search web or enter URL..." class="w-full bg-slate-900/90 border border-[#40bfff]/30 rounded-lg pl-8 pr-4 py-3 text-white placeholder-slate-500 font-mono text-sm focus:outline-none focus:border-[#40bfff] focus:shadow-[0_0_15px_rgba(64,191,255,0.4)] transition">
-                    </div>
-                    <button type="submit" class="bg-[#40bfff]/20 border border-[#40bfff] hover:bg-[#40bfff] hover:text-black text-[#40bfff] font-orbitron font-bold px-5 py-3 rounded-lg transition duration-200 text-sm tracking-wider">
-                        SEARCH
-                    </button>
-                </form>
-            </div>
-
-            <!-- Quick Links / Shortcuts Module -->
-            <div class="tech-border rounded-xl p-5">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="font-orbitron text-sm font-bold text-[#40bfff] tracking-wider">
-                        QUICK LINKS
-                    </h2>
-                    <button onclick="openAddShortcutModal()" class="text-xs text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded hover:bg-emerald-500/10 transition flex items-center space-x-1 font-bold">
-                        <span>+ Add Shortcut</span>
-                    </button>
-                </div>
-                <!-- Shortcuts Grid -->
-                <div id="shortcuts-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
         </div>
 
-        <!-- RIGHT COLUMN: System Status -->
-        <div class="lg:col-span-4 flex flex-col space-y-6">
-
-            <!-- System Resource Monitor -->
-            <div class="tech-border rounded-xl p-5">
-                <h2 class="font-orbitron text-sm font-bold text-[#40bfff] tracking-wider mb-4 flex items-center justify-between">
-                    <span>System Status</span>
-                    <span class="text-[10px] text-emerald-400">Active</span>
-                </h2>
-
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between text-xs mb-1">
-                            <span class="text-slate-400">CPU Usage</span>
-                            <span id="cpu-val" class="text-[#40bfff] font-bold">24%</span>
-                        </div>
-                        <div class="w-full bg-slate-900 rounded-full h-2.5 border border-[#40bfff]/20 overflow-hidden">
-                            <div id="cpu-bar" class="bg-[#40bfff] h-2.5 rounded-full transition-all duration-500 shadow-[0_0_10px_#40bfff]" style="width: 24%"></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs mb-1">
-                            <span class="text-slate-400">Memory Allocation</span>
-                            <span id="ram-val" class="text-emerald-400 font-bold">5.8 / 16 GB</span>
-                        </div>
-                        <div class="w-full bg-slate-900 rounded-full h-2.5 border border-emerald-500/20 overflow-hidden">
-                            <div id="ram-bar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-500 shadow-neon-green" style="width: 36%"></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs mb-1">
-                            <span class="text-slate-400">Network Throughput</span>
-                            <span id="net-val" class="text-pink-400 font-bold">DL: 45.2 MB/s</span>
-                        </div>
-                        <div class="w-full bg-slate-900 rounded-full h-2.5 border border-pink-500/20 overflow-hidden">
-                            <div id="net-bar" class="bg-pink-500 h-2.5 rounded-full transition-all duration-500" style="width: 55%"></div>
-                        </div>
-                    </div>
+        <!-- Search Bar Module -->
+        <div class="w-full tech-border rounded-xl p-3 shadow-lg">
+            <form id="search-form" onsubmit="handleSearch(event)" class="flex flex-col sm:flex-row gap-2">
+                <div class="relative flex items-center">
+                    <select id="search-engine" class="bg-slate-900 border border-[#40bfff]/30 rounded-lg px-3 py-3 text-[#40bfff] font-mono text-xs focus:outline-none focus:border-[#40bfff] cursor-pointer">
+                        <option value="google">Google</option>
+                        <option value="duckduckgo">DuckDuckGo</option>
+                        <option value="github">GitHub</option>
+                        <option value="youtube">YouTube</option>
+                    </select>
                 </div>
-            </div>
+                <div class="relative flex-1 flex items-center">
+                    <span class="absolute left-3 text-[#40bfff] font-bold">&gt;</span>
+                    <input type="text" id="search-input" autofocus autocomplete="off" placeholder="Search web or enter URL..." class="w-full bg-slate-900/90 border border-[#40bfff]/30 rounded-lg pl-8 pr-4 py-3 text-white placeholder-slate-500 font-mono text-sm focus:outline-none focus:border-[#40bfff] focus:shadow-[0_0_15px_rgba(64,191,255,0.4)] transition">
+                </div>
+                <button type="submit" class="bg-[#40bfff]/20 border border-[#40bfff] hover:bg-[#40bfff] hover:text-black text-[#40bfff] font-orbitron font-bold px-5 py-3 rounded-lg transition duration-200 text-xs tracking-wider">
+                    SEARCH
+                </button>
+            </form>
+        </div>
 
+        <!-- Shortcuts Grid Container -->
+        <div class="w-full">
+            <div id="shortcuts-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <!-- Populated dynamically -->
+            </div>
         </div>
 
     </main>
 
-    <footer class="mt-auto py-4 text-center text-xs text-slate-500 border-t border-[#40bfff]/10 tracking-widest">
-        WORKSPACE // THEME: #40BFFF
+    <!-- Footer -->
+    <footer class="w-full max-w-4xl mx-auto text-center text-xs text-slate-600 tracking-widest z-10">
+        NEW TAB // THEME: #40BFFF
     </footer>
 
     <!-- ADD SHORTCUT MODAL -->
@@ -273,47 +181,8 @@
         </div>
     </div>
 
-    <!-- SETTINGS MODAL -->
-    <div id="settings-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="tech-border bg-cyber-panel rounded-xl p-6 max-w-md w-full shadow-2xl">
-            <h3 class="font-orbitron text-lg font-bold text-[#40bfff] mb-4">Settings</h3>
-            <div class="space-y-4 text-sm">
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1 uppercase">Weather City</label>
-                    <input type="text" id="config-city" value="New York" class="w-full bg-slate-900 border border-[#40bfff]/30 rounded-lg px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-[#40bfff]">
-                </div>
-                <div class="flex items-center justify-between pt-2">
-                    <span class="text-slate-300">Clear All Shortcuts</span>
-                    <button onclick="clearAllShortcuts()" class="px-3 py-1.5 rounded border border-pink-500/50 text-pink-400 hover:bg-pink-500/10 transition text-xs font-bold">Clear All</button>
-                </div>
-                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-800">
-                    <button type="button" onclick="toggleSettingsModal()" class="px-4 py-2 rounded bg-[#40bfff] text-black font-bold hover:bg-[#2fa3e6] transition text-xs font-orbitron">Save & Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- NOTIFICATION MODAL -->
-    <div id="alert-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="tech-border bg-cyber-panel rounded-xl p-6 max-w-sm w-full text-center shadow-2xl">
-            <div class="text-[#40bfff] font-orbitron font-bold text-base mb-2">Notice</div>
-            <p id="alert-message" class="text-slate-300 text-sm mb-4 font-mono"></p>
-            <button onclick="closeAlertModal()" class="px-5 py-2 rounded bg-[#40bfff] text-black font-bold hover:bg-[#2fa3e6] transition text-xs font-orbitron">OK</button>
-        </div>
-    </div>
-
     <script>
-        function showNotification(msg) {
-            document.getElementById('alert-message').innerText = msg;
-            document.getElementById('alert-modal').classList.remove('hidden');
-        }
-        function closeAlertModal() {
-            document.getElementById('alert-modal').classList.add('hidden');
-        }
-
         let shortcuts = JSON.parse(localStorage.getItem('tech_shortcuts_40bfff')) || [];
-        let city = localStorage.getItem('tech_city_40bfff') || 'New York';
-        document.getElementById('config-city').value = city;
 
         function renderShortcuts() {
             const grid = document.getElementById('shortcuts-grid');
@@ -321,8 +190,8 @@
             
             if (shortcuts.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full py-6 text-center border border-dashed border-[#40bfff]/20 rounded-lg bg-slate-900/40">
-                        <p class="text-xs text-slate-400 mb-2 font-mono">No shortcuts added yet.</p>
+                    <div class="col-span-full py-8 text-center border border-dashed border-[#40bfff]/20 rounded-xl bg-slate-900/40">
+                        <p class="text-xs text-slate-500 mb-2 font-mono">No shortcuts configured.</p>
                         <button onclick="openAddShortcutModal()" class="text-xs text-[#40bfff] hover:underline font-bold">+ Add your first shortcut</button>
                     </div>
                 `;
@@ -356,14 +225,6 @@
             renderShortcuts();
         }
 
-        function clearAllShortcuts() {
-            shortcuts = [];
-            localStorage.setItem('tech_shortcuts_40bfff', JSON.stringify(shortcuts));
-            renderShortcuts();
-            toggleSettingsModal();
-            showNotification("All shortcuts cleared.");
-        }
-
         function openAddShortcutModal() {
             document.getElementById('shortcut-modal').classList.remove('hidden');
         }
@@ -381,18 +242,6 @@
             renderShortcuts();
             closeAddShortcutModal();
             document.getElementById('add-shortcut-form').reset();
-        }
-
-        function toggleSettingsModal() {
-            const modal = document.getElementById('settings-modal');
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-            } else {
-                city = document.getElementById('config-city').value.trim() || 'New York';
-                localStorage.setItem('tech_city_40bfff', city);
-                modal.classList.add('hidden');
-                fetchWeather();
-            }
         }
 
         function handleSearch(e) {
@@ -418,8 +267,7 @@
             window.location.href = searchUrl;
         }
 
-        let startTime = Date.now();
-        function updateClockAndUptime() {
+        function updateClock() {
             const now = new Date();
             let hours = now.getHours();
             const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -435,53 +283,9 @@
 
             const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
             document.getElementById('system-date').innerText = now.toLocaleDateString('en-US', options).toUpperCase();
-
-            const h2 = now.getHours();
-            let greet = "GOOD MORNING";
-            if (h2 >= 12 && h2 < 18) greet = "GOOD AFTERNOON";
-            else if (h2 >= 18) greet = "GOOD EVENING";
-            document.getElementById('greeting-text').innerText = greet;
-
-            const diff = Math.floor((Date.now() - startTime) / 1000);
-            const upH = String(Math.floor(diff / 3600)).padStart(2, '0');
-            const upM = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-            const upS = String(diff % 60).padStart(2, '0');
-            document.getElementById('uptime-status').innerText = `${upH}:${upM}:${upS}`;
         }
-        setInterval(updateClockAndUptime, 1000);
-        updateClockAndUptime();
-
-        function updateTelemetry() {
-            const cpu = Math.floor(Math.random() * 35) + 15;
-            const ramUsed = (Math.random() * 1.5 + 5.0).toFixed(1);
-            const netSpeed = (Math.random() * 30 + 25).toFixed(1);
-
-            document.getElementById('cpu-val').innerText = `${cpu}%`;
-            document.getElementById('cpu-bar').style.width = `${cpu}%`;
-
-            document.getElementById('ram-val').innerText = `${ramUsed} / 16 GB`;
-            document.getElementById('ram-bar').style.width = `${(ramUsed / 16) * 100}%`;
-
-            document.getElementById('net-val').innerText = `DL: ${netSpeed} MB/s`;
-            document.getElementById('net-bar').style.width = `${netSpeed}%`;
-        }
-        setInterval(updateTelemetry, 4000);
-
-        async function fetchWeather() {
-            try {
-                const res = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
-                if (!res.ok) throw new Error('Weather fetch failed');
-                const data = await res.json();
-                const temp = data.current_condition[0].temp_C;
-                const desc = data.current_condition[0].weatherDesc[0].value;
-                document.getElementById('weather-temp').innerText = `${temp}°C`;
-                document.getElementById('weather-cond').innerText = `${city.toUpperCase()} // ${desc.toUpperCase()}`;
-            } catch (err) {
-                document.getElementById('weather-temp').innerText = '21°C';
-                document.getElementById('weather-cond').innerText = `${city.toUpperCase()} // CLEAR`;
-            }
-        }
-        fetchWeather();
+        setInterval(updateClock, 1000);
+        updateClock();
 
         renderShortcuts();
     </script>
